@@ -95,12 +95,12 @@ async function connectWebsite() {
               </li>              
               }
               {location.pathname === "/sellNFT" ? 
-              <li className='border-b-2 hover:pb-0 p-2'>
+              <li className='border-b-1 hover:pb-1 p-2'>
                 <Link to="/sellNFT">List My NFT</Link>
               </li>
               :
-              <li className='hover:border-b-2 hover:pb-0 p-2'>
-                <Link to="/sellNFT">List My NFT</Link>
+              <li className='hover:border-b-1 hover:pb-0 p-2'>
+                <Link to="/sellNFT">Mis NFTs</Link>
               </li>              
               }              
               {location.pathname === "/profile" ? 
@@ -109,18 +109,18 @@ async function connectWebsite() {
               </li>
               :
               <li className='hover:border-b-2 hover:pb-0 p-2'>
-                <Link to="/profile">Profile</Link>
+                <Link to="/profile">Perfil</Link>
               </li>              
               }  
               <li>
-                <button className="enableEthereumButton bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm" onClick={connectWebsite}>{connected? "Connected":"Connect Wallet"}</button>
+                <button className="enableEthereumButton bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm" onClick={connectWebsite}>{connected? "Conectado":"Connect Wallet"}</button>
               </li>
             </ul>
           </li>
           </ul>
         </nav>
         <div className='text-white text-bold text-right mr-10 text-sm'>
-          {currAddress !== "0x" ? "Connected to":"Not Connected. Please login to view NFTs"} {currAddress !== "0x" ? (currAddress.substring(0,15)+'...'):""}
+          {currAddress !== "0x" ? "Connected to":"No estás conectado. Por favor conéctate para ver tus NFTs"} {currAddress !== "0x" ? (currAddress.substring(0,15)+'...'):""}
         </div>
       </div>
     );
