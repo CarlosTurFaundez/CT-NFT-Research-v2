@@ -52,7 +52,7 @@ export default function SellNFT () {
         //Make sure that none of the fields are empty
         if( !name || !description || !price || !fileURL)
         {
-            updateMessage("Please fill all the fields!")
+            updateMessage("¡Por favor, completa todos los campos!")
             return -1;
         }
 

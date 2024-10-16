@@ -18,8 +18,8 @@ module.exports = {
     },
     
     sepolia: {
-      url: process.env.REACT_APP_ALCHEMY_API_URL,
-      accounts: [ process.env.REACT_APP_PRIVATE_KEY ]
+      url: "https://eth-sepolia.g.alchemy.com/v2/oAKXPi8t0_v6sqFEwq6UXx4U-YLU5aDJ",
+      accounts: ["1e46c90277a654b86f0eacfc437943869903f9ed3caa9ab1a05206a64fb916fd",]
     }
   },
   solidity: {

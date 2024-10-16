@@ -9,7 +9,7 @@ export default function Marketplace() {
 const sampleData = [
     {
         "name": "NFT#1",
-        "description": "Alchemy's First NFT",
+        "description": "Este es el primer NFT",
         "website":"http://axieinfinity.io",
         "image":"https://gateway.pinata.cloud/ipfs/QmTsRJX7r5gyubjkdmzFrKQhHv74p5wT9LdeF1m3RTqrE5",
         "price":"0.03ETH",
@@ -18,7 +18,7 @@ const sampleData = [
     },
     {
         "name": "NFT#2",
-        "description": "Alchemy's Second NFT",
+        "description": "Este es el segundo NFT",
         "website":"http://axieinfinity.io",
         "image":"https://gateway.pinata.cloud/ipfs/QmdhoL9K8my2vi3fej97foiqGmJ389SMs55oC5EdkrxF2M",
         "price":"0.03ETH",
@@ -27,9 +27,9 @@ const sampleData = [
     },
     {
         "name": "NFT#3",
-        "description": "Alchemy's Third NFT",
+        "description": "Este es el tercer NFT",
         "website":"http://axieinfinity.io",
-        "image":"https://gateway.pinata.cloud/ipfs/QmTsRJX7r5gyubjkdmzFrKQhHv74p5wT9LdeF1m3RTqrE5",
+        "image":"",
         "price":"0.03ETH",
         "currentlySelling":"True",
         "address":"0xe81Bf5A757C4f7F82a2F23b1e59bE45c33c5b13",
