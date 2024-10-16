@@ -80,7 +80,7 @@ return (
     <div>
         <Navbar></Navbar>
         <div className="flex flex-col place-items-center mt-20">
-            <div className="md:text-xl font-bold text-white">
+            <div className="md:text-lg font-sans text-pink-200">
                 ESTOS SON LOS NFT MÁS DESTACADOS
             </div>
             <div className="flex mt-5 justify-between flex-wrap max-w-screen-xl text-center">
