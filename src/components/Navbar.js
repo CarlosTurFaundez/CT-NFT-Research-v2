@@ -88,7 +88,7 @@ function Navbar() {
                 <Link to="/">Marketplace</Link>
               </li>
               <li className={`hover:border-b-1 hover:pb-0 p-2 whitespace-nowrap ${location.pathname === "/sellNFT" ? "border-b-1" : ""}`}>
-                <Link to="/sellNFT">Mis NFTs</Link>
+                <Link to="/sellNFT">Crear NFTs</Link>
               </li>
               <li className={`hover:border-b-2 hover:pb-0 p-2 ${location.pathname === "/profile" ? "border-b-2" : ""}`}>
                 <Link to="/profile">Perfil</Link>

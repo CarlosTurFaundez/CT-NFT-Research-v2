@@ -119,7 +119,7 @@ export default function SellNFT () {
             <h3 className="text-center font-bold text-purple-500 mb-8">Sube tu NFT a este marketplace</h3>
                 <div className="mb-4">
                     <label className="block text-purple-500 text-sm font-bold mb-2" htmlFor="name">Nombre del NFT</label>
-                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Axie#4563" onChange={e => updateFormParams({...formParams, name: e.target.value})} value={formParams.name}></input>
+                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="El nombre que eliges" onChange={e => updateFormParams({...formParams, name: e.target.value})} value={formParams.name}></input>
                 </div>
                 <div className="mb-6">
                     <label className="block text-purple-500 text-sm font-bold mb-2" htmlFor="description">Descripción del NFT</label>
@@ -136,7 +136,7 @@ export default function SellNFT () {
                 <br></br>
                 <div className="text-red-500 text-center">{message}</div>
                 <button onClick={listNFT} className="font-bold mt-10 w-full bg-purple-500 text-white rounded p-2 shadow-lg" id="list-button">
-                    List NFT
+                    Subir tu NFT
                 </button>
             </form>
         </div>

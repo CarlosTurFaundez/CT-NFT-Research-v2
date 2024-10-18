@@ -1,52 +1,54 @@
-//require('dotenv').config();
-const key = process.env.REACT_APP_PINATA_KEY;
-const secret = process.env.REACT_APP_PINATA_SECRET;
+require('dotenv').config();
+const key = process.env.REACT_APP_PINATA_API_KEY;
+const secret = process.env.REACT_APP_PINATA_API_SECRET;
 
 const axios = require('axios');
 const FormData = require('form-data');
 
-export const uploadJSONToIPFS = async(JSONBody) => {
+// Función para subir JSON a IPFS
+export const uploadJSONToIPFS = async (jsonBody) => {
     const url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`;
-    //making axios POST request to Pinata ⬇️
-    return axios 
-        .post(url, JSONBody, {
+
+    return axios
+        .post(url, jsonBody, {
             headers: {
                 pinata_api_key: key,
                 pinata_secret_api_key: secret,
             }
         })
         .then(function (response) {
-           return {
-               success: true,
-               pinataURL: "https://gateway.pinata.cloud/ipfs/" + response.data.IpfsHash
-           };
+            return {
+                success: true,
+                pinataURL: "https://gateway.pinata.cloud/ipfs/" + response.data.IpfsHash,
+                cid: response.data.IpfsHash, // Agregar el CID
+            };
         })
         .catch(function (error) {
-            console.log(error)
+            console.log(error);
             return {
                 success: false,
                 message: error.message,
-            }
-
-    });
+            };
+        });
 };
 
-export const uploadFileToIPFS = async(file) => {
+// Función para subir archivos a IPFS
+export const uploadFileToIPFS = async (file) => {
     const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
-    //making axios POST request to Pinata ⬇️
     
     let data = new FormData();
     data.append('file', file);
 
+    // Metadata puede incluir el nombre del NFT y otros atributos, si es necesario
     const metadata = JSON.stringify({
-        name: 'testname',
+        name: file.name, // Usar el nombre del archivo como ejemplo
         keyvalues: {
             exampleKey: 'exampleValue'
         }
     });
     data.append('pinataMetadata', metadata);
 
-    //pinataOptions are optional
+    // Opciones de pinning (opcional)
     const pinataOptions = JSON.stringify({
         cidVersion: 0,
         customPinPolicy: {
@@ -64,7 +66,7 @@ export const uploadFileToIPFS = async(file) => {
     });
     data.append('pinataOptions', pinataOptions);
 
-    return axios 
+    return axios
         .post(url, data, {
             maxBodyLength: 'Infinity',
             headers: {
@@ -74,18 +76,18 @@ export const uploadFileToIPFS = async(file) => {
             }
         })
         .then(function (response) {
-            console.log("image uploaded", response.data.IpfsHash)
+            console.log("Image uploaded", response.data.IpfsHash);
             return {
-               success: true,
-               pinataURL: "https://gateway.pinata.cloud/ipfs/" + response.data.IpfsHash
-           };
+                success: true,
+                pinataURL: "https://gateway.pinata.cloud/ipfs/" + response.data.IpfsHash,
+                cid: response.data.IpfsHash, // Agregar el CID
+            };
         })
         .catch(function (error) {
-            console.log(error)
+            console.log(error);
             return {
                 success: false,
                 message: error.message,
-            }
-
-    });
+            };
+        });
 };
