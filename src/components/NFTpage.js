@@ -73,8 +73,8 @@ export default function NFTPage (props) {
         <div style={{ "min-height": "100vh" }}>
             <Navbar />
             <div className="flex ml-20 mt-20">
-                <img src={data.image} alt="" className="w-2/5" />
-                <div className="text-base ml-20 space-y-8 text-white shadow-2xl rounded-lg border-2 p-5">
+                <img src={data.image} alt="" className="w-2/5 h-auto object-contain" />
+                <div className="text-base ml-20 space-y-8 text-white shadow-2xl rounded-lg border-2 p-5 max-w-xl">
                     <div>
                         <span className="text-white">Nombre:</span> <span className="text-white"> {data.name} </span>
                     </div>
@@ -85,13 +85,13 @@ export default function NFTPage (props) {
                         <span className="text-white">Precio:</span> <span className="text-white"><span className="text-sky-300 text-sm">  {data.price + " ETH"}   </span></span>
                     </div>
                     <div>
-                        <span className="text-white">Propietario:</span> <span className="text-white">{data.owner}</span>
+                        <span className="text-white">Propietario:</span> <span className="text-white"><span className="text-sky-300 text-sm">  {data.owner}   </span> </span>
                     </div>
                     <div>
-                        <span className="text-white">Vendedor:</span> <span className="text-white">{data.seller}</span>
+                        <span className="text-white">Vendedor:</span> <span className="text-white"><span className="text-sky-300 text-sm">  {data.seller}   </span> </span>
                     </div>
                     <div>
-                        <span className="text-white">ID:</span> <span className="text-white">{data.tokenId}</span>
+                        <span className="text-white">ID:</span> <span className="text-white"><span className="text-sky-500 text-sm"> {data.tokenId} </span></span>
                     </div>
                     <div>
                         <a
@@ -112,7 +112,7 @@ export default function NFTPage (props) {
                     <div>
                         { currAddress !== data.owner && currAddress !== data.seller ?
                             <button className="enableEthereumButton bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm" onClick={() => buyNFT(tokenId)}>Compra este NFT</button>
-                            : <div className="text-emerald-700 text-2xl">Eres el propietario de este NFT</div>
+                            : <div className="text-emerald-500 text-2xl">Eres el propietario de este NFT</div>
                         }
                         <div className="text-green text-center mt-3">{message}</div>
                     </div>

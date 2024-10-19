@@ -2,104 +2,105 @@ import Navbar from "./Navbar";
 import NFTTile from "./NFTTile";
 import MarketplaceJSON from "../Marketplace.json";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { GetIpfsUrlFromPinata } from "../utils";
 
 export default function Marketplace() {
     const sampleData = [
         {
-            "name": "NFT#1",
-            "description": "Este es el primer NFT",
-            "website": "http://axieinfinity.io",
-            "image": "https://gateway.pinata.cloud/ipfs/QmTsRJX7r5gyubjkdmzFrKQhHv74p5wT9LdeF1m3RTqrE5",
-            "price": "0.03ETH",
-            "currentlySelling": "True",
-            "address": "0xe81Bf5A757CB4f7F82a2F23b1e59bE45c33c5b13",
+            name: "NFT#1",
+            description: "Este es el primer NFT",
+            website: "http://axieinfinity.io",
+            image: "https://gateway.pinata.cloud/ipfs/QmTsRJX7r5gyubjkdmzFrKQhHv74p5wT9LdeF1m3RTqrE5",
+            price: "0.03ETH",
+            currentlySelling: "True",
+            address: "0xe81Bf5A757CB4f7F82a2F23b1e59bE45c33c5b13",
         },
         {
-            "name": "NFT#2",
-            "description": "Este es el segundo NFT",
-            "website": "http://axieinfinity.io",
-            "image": "https://gateway.pinata.cloud/ipfs/QmdhoL9K8my2vi3fej97foiqGmJ389SMs55oC5EdkrxF2M",
-            "price": "0.03ETH",
-            "currentlySelling": "True",
-            "address": "0xe81Bf5A757C4f7F82a2F23b1e59bE45c33c5b13",
+            name: "NFT#2",
+            description: "Este es el segundo NFT",
+            website: "http://axieinfinity.io",
+            image: "https://gateway.pinata.cloud/ipfs/QmdhoL9K8my2vi3fej97foiqGmJ389SMs55oC5EdkrxF2M",
+            price: "0.03ETH",
+            currentlySelling: "True",
+            address: "0xe81Bf5A757C4f7F82a2F23b1e59bE45c33c5b13",
         },
         {
-            "name": "NFT#3",
-            "description": "Este es el tercer NFT",
-            "website": "http://axieinfinity.io",
-            "image": "",
-            "price": "0.03ETH",
-            "currentlySelling": "True",
-            "address": "0xe81Bf5A757C4f7F82a2F23b1e59bE45c33c5b13",
+            name: "NFT#3",
+            description: "Este es el tercer NFT",
+            website: "http://axieinfinity.io",
+            image: "",
+            price: "0.03ETH",
+            currentlySelling: "True",
+            address: "0xe81Bf5A757C4f7F82a2F23b1e59bE45c33c5b13",
         },
     ];
-    
+
     const [data, updateData] = useState(sampleData);
     const [dataFetched, updateFetched] = useState(false);
 
-    async function getAllNFTs() {
+    // Fetch NFTs from the blockchain
+    const getAllNFTs = async () => {
         const ethers = require("ethers");
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
-        let contract = new ethers.Contract(MarketplaceJSON.address, MarketplaceJSON.abi, signer);
-        let transaction = await contract.getAllNFTs();
+        const contract = new ethers.Contract(MarketplaceJSON.address, MarketplaceJSON.abi, signer);
+        const transaction = await contract.getAllNFTs();
 
-        const items = await Promise.all(transaction.map(async i => {
-            var tokenURI = await contract.tokenURI(i.tokenId);
-            console.log("getting this tokenUri", tokenURI);
-            tokenURI = GetIpfsUrlFromPinata(tokenURI);
-            let meta = await axios.get(tokenURI);
-            meta = meta.data;
+        const items = await Promise.all(
+            transaction.map(async (i) => {
+                let tokenURI = await contract.tokenURI(i.tokenId);
+                tokenURI = GetIpfsUrlFromPinata(tokenURI);
+                let meta = await axios.get(tokenURI);
+                meta = meta.data;
 
-            let price = ethers.utils.formatUnits(i.price.toString(), 'ether');
-            let item = {
-                price,
-                tokenId: i.tokenId.toNumber(),
-                seller: i.seller,
-                owner: i.owner,
-                image: meta.image,
-                name: meta.name,
-                description: meta.description,
-            };
-            return item;
-        }));
+                const price = ethers.utils.formatUnits(i.price.toString(), "ether");
+                return {
+                    price,
+                    tokenId: i.tokenId.toNumber(),
+                    seller: i.seller,
+                    owner: i.owner,
+                    image: meta.image,
+                    name: meta.name,
+                    description: meta.description,
+                };
+            })
+        );
 
         updateFetched(true);
         updateData(items);
-    }
+    };
 
-    if (!dataFetched) getAllNFTs();
+    // Fetch NFTs only once when the component mounts
+    useEffect(() => {
+        if (!dataFetched) getAllNFTs();
+    }, [dataFetched]);
 
-    // Dirección del smart contract
+    // Smart contract address
     const contractAddress = MarketplaceJSON.address;
 
     return (
         <div>
             <Navbar />
             <div className="flex flex-col place-items-center mt-20">
-                <div className="md:text-lg font-sans text-pink-200">
-                    ESTOS SON LOS NFT MÁS DESTACADOS
-                </div>
-                {/* Enlace al explorador de Sepolia */}
+                <div className="md:text-lg font-sans text-pink-200">ESTOS SON LOS NFT MÁS DESTACADOS</div>
                 <span className="mt-2 text-white">
                     Ver Smart Contract sobre el que han sido creados:
-                    <a 
-                        href={`https://sepolia.etherscan.io/address/${contractAddress}`} 
-                        target="_blank" 
+                    <a
+                        href={`https://sepolia.etherscan.io/address/${contractAddress}`}
+                        target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-500 underline ml-2" // Agregar margen a la izquierda
+                        className="text-blue-500 underline ml-2"
                     >
                         {contractAddress}
                     </a>
                 </span>
-                <div className="mt-5 flex justify-between flex-wrap max-w-screen-xl text-center">
+                <div className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-0">
                     {data.map((value, index) => (
                         <NFTTile data={value} key={index} />
                     ))}
                 </div>
-            </div>            
+            </div>
         </div>
     );
 }
