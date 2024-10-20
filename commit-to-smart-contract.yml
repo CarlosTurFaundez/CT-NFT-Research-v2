@@ -1,0 +1,36 @@
+name: Deploy Commit Hash to Smart Contract
+
+on:
+  push:
+    branches:
+      - main
+      - VERSIONNUEVA1  # Asegúrate de incluir aquí tus ramas relevantes.
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'  # O la versión de Node que estés usando.
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Get commit information
+      id: commit_info
+      run: |
+        echo "COMMIT_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
+        echo "COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
+        echo "COMMIT_DATE=$(date '+%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
+
+    - name: Deploy commit hash to smart contract
+      run: |
+        # Aquí debes agregar el código para interactuar con tu smart contract.
+        # Esto podría incluir el uso de Hardhat o web3.js para llamar a la función en tu smart contract.
+        echo "Deploying commit hash $COMMIT_HASH by $COMMIT_AUTHOR on $COMMIT_DATE to the smart contract"
