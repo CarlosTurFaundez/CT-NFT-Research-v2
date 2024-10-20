@@ -1,0 +1,47 @@
+{
+  "address": "0x345a8597c4ce44dc5D5cbDA8274D392aFdb46a53",
+  "abi": [
+    {
+      "type": "function",
+      "name": "agregarCommit",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        { "type": "string", "name": "_hash" },
+        { "type": "string", "name": "_autor" }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "commits",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [{ "type": "uint256" }],
+      "outputs": [
+        { "type": "string", "name": "hash" },
+        { "type": "string", "name": "autor" },
+        { "type": "uint256", "name": "timestamp" }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "obtenerCommits",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "tuple[]",
+          "components": [
+            { "type": "string", "name": "hash" },
+            { "type": "string", "name": "autor" },
+            { "type": "uint256", "name": "timestamp" }
+          ]
+        }
+      ]
+    }
+  ]
+}
