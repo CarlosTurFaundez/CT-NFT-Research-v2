@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/CT-NFT-Research/static/css/main.a81548bd.css",
+    "main.js": "/CT-NFT-Research/static/js/main.ae404946.js",
+    "static/js/453.c21bb676.chunk.js": "/CT-NFT-Research/static/js/453.c21bb676.chunk.js",
+    "static/media/bg.png": "/CT-NFT-Research/static/media/bg.e9fbae61ddb67e7e77a2.png",
+    "index.html": "/CT-NFT-Research/index.html",
+    "main.a81548bd.css.map": "/CT-NFT-Research/static/css/main.a81548bd.css.map",
+    "main.ae404946.js.map": "/CT-NFT-Research/static/js/main.ae404946.js.map",
+    "453.c21bb676.chunk.js.map": "/CT-NFT-Research/static/js/453.c21bb676.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a81548bd.css",
+    "static/js/main.ae404946.js"
+  ]
+}
