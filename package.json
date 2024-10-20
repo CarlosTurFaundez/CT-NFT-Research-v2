@@ -2,6 +2,7 @@
   "name": "marketplace3",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://CarlosTurFaundez.github.io/CT-NFT-Research",  
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3",
     "@testing-library/jest-dom": "^5.16.4",
@@ -25,7 +26,9 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -57,6 +60,7 @@
     "dotenv": "^16.4.5",
     "ethereum-waffle": "^3.4.4",
     "ethers": "^5.6.8",
+    "gh-pages": "^6.2.0",
     "hardhat": "^2.22.13",
     "hardhat-gas-reporter": "^2.2.1",
     "https-browserify": "^1.0.0",
