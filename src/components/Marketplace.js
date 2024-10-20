@@ -4,33 +4,32 @@ import MarketplaceJSON from "../Marketplace.json";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { GetIpfsUrlFromPinata } from "../utils";
+import Swal from "sweetalert2";
 
 export default function Marketplace() {
+    useEffect(() => {
+        Swal.fire({
+            icon: 'info',
+            title: '¡Atención!',
+            text: '¡Esta no es una página comercial! Ha sido creada exclusivamente para ser destinada a la investigación jurídica y a la docencia.',
+            confirmButtonText: 'Aceptar',
+        });
+    }, []);
     const sampleData = [
         {
-            name: "NFT#1",
-            description: "Este es el primer NFT",
-            website: "http://axieinfinity.io",
-            image: "https://gateway.pinata.cloud/ipfs/QmTsRJX7r5gyubjkdmzFrKQhHv74p5wT9LdeF1m3RTqrE5",
-            price: "0.03ETH",
+            image: "https://olive-abundant-impala-307.mypinata.cloud/ipfs/QmXj3tbxEyiznu9TQrR7gCo2ZkfPvJfu1roddsnSrFQeyQ",
+            price: "0.01 ETH",
             currentlySelling: "True",
-            address: "0xe81Bf5A757CB4f7F82a2F23b1e59bE45c33c5b13",
         },
         {
-            name: "NFT#2",
-            description: "Este es el segundo NFT",
-            website: "http://axieinfinity.io",
-            image: "https://gateway.pinata.cloud/ipfs/QmdhoL9K8my2vi3fej97foiqGmJ389SMs55oC5EdkrxF2M",
-            price: "0.03ETH",
+            image: "https://olive-abundant-impala-307.mypinata.cloud/ipfs/Qmc9gmr14JvdW9zh7E6hsv2aJ9KrnruZtd6EAeA52cK42S",
+            price: "0.01 ETH",
             currentlySelling: "True",
             address: "0xe81Bf5A757C4f7F82a2F23b1e59bE45c33c5b13",
         },
         {
-            name: "NFT#3",
-            description: "Este es el tercer NFT",
-            website: "http://axieinfinity.io",
-            image: "",
-            price: "0.03ETH",
+            image: "https://olive-abundant-impala-307.mypinata.cloud/ipfs/Qmc9gmr14JvdW9zh7E6hsv2aJ9KrnruZtd6EAeA52cK42S",
+            price: "0.01 ETH",
             currentlySelling: "True",
             address: "0xe81Bf5A757C4f7F82a2F23b1e59bE45c33c5b13",
         },
@@ -39,7 +38,6 @@ export default function Marketplace() {
     const [data, updateData] = useState(sampleData);
     const [dataFetched, updateFetched] = useState(false);
 
-    // Fetch NFTs from the blockchain
     const getAllNFTs = async () => {
         const ethers = require("ethers");
         const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -71,12 +69,10 @@ export default function Marketplace() {
         updateData(items);
     };
 
-    // Fetch NFTs only once when the component mounts
     useEffect(() => {
         if (!dataFetched) getAllNFTs();
     }, [dataFetched]);
 
-    // Smart contract address
     const contractAddress = MarketplaceJSON.address;
 
     return (
@@ -95,7 +91,7 @@ export default function Marketplace() {
                         {contractAddress}
                     </a>
                 </span>
-                <div className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-0">
+                <div className="mt-5 grid grid-cols-2 md:grid-cols-3 gap-4">
                     {data.map((value, index) => (
                         <NFTTile data={value} key={index} />
                     ))}

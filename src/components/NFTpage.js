@@ -4,6 +4,7 @@ import MarketplaceJSON from "../Marketplace.json";
 import axios from "axios";
 import { useState } from "react";
 import { GetIpfsUrlFromPinata } from "../utils";
+import Swal from "sweetalert2"; // Importa SweetAlert2
 
 export default function NFTPage(props) {
     const [data, updateData] = useState({});
@@ -65,21 +66,39 @@ export default function NFTPage(props) {
             updateMessage("Error fetching NFT data");
         }
     }
+
     async function buyNFT(tokenId) {
         try {
+            // Muestra el SweetAlert antes de continuar con la compra
+            const { value: accept } = await Swal.fire({
+                title: '¡Atención!',
+                text: 'OJO VAS A COMPRAR UN NFT. ANTES DE HACERLO DEBES LEER LAS CONDICIONES GENERALES.',
+                icon: 'warning',
+                input: 'textarea',
+                inputPlaceholder: 'Condiciones generales... (Texto de prueba en latín)',
+                showCancelButton: true,
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar',
+            });
+
+            // Si el usuario cancela, salir de la función
+            if (!accept) {
+                return;
+            }
+
             const ethers = require("ethers");
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
-    
+
             const contract = new ethers.Contract(MarketplaceJSON.address, MarketplaceJSON.abi, signer);
             const salePrice = ethers.utils.parseUnits(data.price, 'ether');
-    
+
             // Verificar si el NFT está listado
             if (!isListed) {
                 alert("El NFT no está listado o no existe.");
                 return;
             }
-    
+
             let gasEstimate;
             try {
                 // Intentar estimar el gas
@@ -91,24 +110,24 @@ export default function NFTPage(props) {
                 gasEstimate = 100000; // Establece un valor que creas que es suficiente
                 alert("No se pudo estimar el gas. Usando un límite de gas manual.");
             }
-    
+
             updateMessage("Buying the NFT... Please Wait (Upto 5 mins)");
-    
+
             // Ejecutar la función de venta
             let transaction = await contract.executeSale(tokenId, {
                 value: salePrice,
                 gasLimit: gasEstimate
             });
             await transaction.wait();
-    
-            alert('You successfully bought the NFT!');
+
+            alert('Has comprado con éxito el NFT!');
             updateMessage("");
         } catch (error) {
             console.error("Error in the purchase:", error);
             alert("Error al intentar comprar el NFT: " + error.message);
         }
     }
-    
+
     const params = useParams();
     const tokenId = params.tokenId;
     if (!dataFetched) getNFTData(tokenId);
