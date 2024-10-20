@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
@@ -21,8 +21,8 @@ contract NFTMarketplace is ERC721URIStorage {
     // The structure to store info about a listed token
     struct ListedToken {
         uint256 tokenId;
-        address payable owner;
-        address payable seller;
+        address payable owner; // Cambiado a address payable
+        address payable seller; // Cambiado a address payable
         uint256 price;
         bool currentlyListed;
     }
@@ -153,23 +153,24 @@ contract NFTMarketplace is ERC721URIStorage {
     }
 
     function executeSale(uint256 tokenId) public payable {
-        uint price = idToListedToken[tokenId].price;
-        address seller = idToListedToken[tokenId].seller;
-        require(msg.value == price, "Please submit the asking price in order to complete the purchase");
+        ListedToken storage listedToken = idToListedToken[tokenId];
 
-        // Update the details of the token
-        idToListedToken[tokenId].currentlyListed = false; // Cambiado a false después de la venta
-        idToListedToken[tokenId].seller = payable(msg.sender);
+        require(listedToken.currentlyListed, "This token is not listed for sale");
+        require(msg.value == listedToken.price, "Incorrect value sent");
+
+        address payable seller = listedToken.seller; // Cambiado a address payable
+
+        // Update token details
+        listedToken.currentlyListed = false; // Cambiado a false después de la venta
+        listedToken.seller = payable(msg.sender); // Cambiado aquí
         _itemsSold.increment();
 
         // Actually transfer the token from the seller to the new owner
-        _transfer(seller, msg.sender, tokenId); // Cambiado aquí
+        _transfer(seller, msg.sender, tokenId);
 
         // Transfer the listing fee to the marketplace creator
-        payable(owner).transfer(listPrice);
+        owner.transfer(listPrice); // Esto ahora funcionará
         // Transfer the proceeds from the sale to the seller of the NFT
-        payable(seller).transfer(msg.value);
+        seller.transfer(msg.value); // Esto funcionará ahora
     }
-
-    
 }

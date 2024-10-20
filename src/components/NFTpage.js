@@ -1,70 +1,114 @@
 import Navbar from "./Navbar";
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import MarketplaceJSON from "../Marketplace.json";
 import axios from "axios";
 import { useState } from "react";
 import { GetIpfsUrlFromPinata } from "../utils";
 
-export default function NFTPage (props) {
+export default function NFTPage(props) {
     const [data, updateData] = useState({});
     const [dataFetched, updateDataFetched] = useState(false);
     const [message, updateMessage] = useState("");
     const [currAddress, updateCurrAddress] = useState("");
     const [cid, updateCid] = useState("");
+    const [isListed, setIsListed] = useState(false);  // Nuevo estado para verificar si el NFT está listado
 
     async function getNFTData(tokenId) {
-        const ethers = require("ethers");
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const addr = await signer.getAddress();
-        let contract = new ethers.Contract(MarketplaceJSON.address, MarketplaceJSON.abi, signer);
-        
-        var tokenURI = await contract.tokenURI(tokenId);
-        const listedToken = await contract.getListedTokenForId(tokenId);
-        tokenURI = GetIpfsUrlFromPinata(tokenURI);
-        
-        let meta = await axios.get(tokenURI);
-        meta = meta.data;
+        try {
+            const ethers = require("ethers");
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            const addr = await signer.getAddress();
+            const contract = new ethers.Contract(MarketplaceJSON.address, MarketplaceJSON.abi, signer);
 
-        const imageCid = GetIpfsUrlFromPinata(meta.image);
-        const metadataCid = GetIpfsUrlFromPinata(tokenURI);
+            // Obtener la URI del token
+            let tokenURI = await contract.tokenURI(tokenId);
+            // Obtener la dirección del propietario actual
+            const currentOwner = await contract.ownerOf(tokenId);
 
-        let item = {
-            price: meta.price,
-            tokenId: tokenId,
-            seller: listedToken.seller,
-            owner: listedToken.owner,
-            image: imageCid,
-            name: meta.name,
-            description: meta.description,
-            cid: metadataCid
-        };
+            // Verificar si el token está listado
+            let listedToken;
+            try {
+                listedToken = await contract.getListedTokenForId(tokenId);
+                setIsListed(true); // El token está listado
+            } catch (error) {
+                listedToken = null; // Si no está listado
+                setIsListed(false); // El token no está listado
+            }
 
-        updateCid(metadataCid);
-        updateData(item);
-        updateDataFetched(true);
-        updateCurrAddress(addr);
+            tokenURI = GetIpfsUrlFromPinata(tokenURI);
+            const meta = await axios.get(tokenURI).then(res => res.data);
+            const imageCid = GetIpfsUrlFromPinata(meta.image);
+            const metadataCid = GetIpfsUrlFromPinata(tokenURI);
+
+            // Convertir el precio de wei a ether
+            const priceInEther = listedToken ? ethers.utils.formatEther(listedToken.price) : "No disponible"; 
+
+            // Crear el objeto item con los datos necesarios
+            const item = {
+                price: priceInEther, // Mostrar el precio en Ether
+                tokenId: tokenId,
+                seller: listedToken ? listedToken.seller : "No disponible", // Solo mostrar el vendedor si está listado
+                owner: currentOwner, // Cambiado para usar el propietario actual
+                image: imageCid,
+                name: meta.name,
+                description: meta.description,
+                cid: metadataCid
+            };
+
+            updateCid(metadataCid);
+            updateData(item);
+            updateDataFetched(true);
+            updateCurrAddress(addr);
+        } catch (error) {
+            console.error("Error fetching NFT data:", error);
+            updateMessage("Error fetching NFT data");
+        }
     }
-
     async function buyNFT(tokenId) {
         try {
             const ethers = require("ethers");
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
-
-            let contract = new ethers.Contract(MarketplaceJSON.address, MarketplaceJSON.abi, signer);
+    
+            const contract = new ethers.Contract(MarketplaceJSON.address, MarketplaceJSON.abi, signer);
             const salePrice = ethers.utils.parseUnits(data.price, 'ether');
-            updateMessage("Adquiriendo el NFT. Por favor, espera. (Puede tardar hasta 5 mins)");
-            let transaction = await contract.executeSale(tokenId, {value: salePrice});
+    
+            // Verificar si el NFT está listado
+            if (!isListed) {
+                alert("El NFT no está listado o no existe.");
+                return;
+            }
+    
+            let gasEstimate;
+            try {
+                // Intentar estimar el gas
+                gasEstimate = await contract.estimateGas.executeSale(tokenId, { value: salePrice });
+                console.log("Gas estimate:", gasEstimate.toString());
+            } catch (error) {
+                console.error("Error estimating gas:", error);
+                // Si falla, establecer un gas limit manual
+                gasEstimate = 100000; // Establece un valor que creas que es suficiente
+                alert("No se pudo estimar el gas. Usando un límite de gas manual.");
+            }
+    
+            updateMessage("Buying the NFT... Please Wait (Upto 5 mins)");
+    
+            // Ejecutar la función de venta
+            let transaction = await contract.executeSale(tokenId, {
+                value: salePrice,
+                gasLimit: gasEstimate
+            });
             await transaction.wait();
-
-            alert('Has comprado con éxito un NFT');
+    
+            alert('You successfully bought the NFT!');
             updateMessage("");
-        } catch (e) {
-            alert("Upload Error" + e);
+        } catch (error) {
+            console.error("Error in the purchase:", error);
+            alert("Error al intentar comprar el NFT: " + error.message);
         }
     }
-
+    
     const params = useParams();
     const tokenId = params.tokenId;
     if (!dataFetched) getNFTData(tokenId);
@@ -110,10 +154,15 @@ export default function NFTPage (props) {
                         <span className="text-white">Enlace de IPFS de los metadatos:</span> <a href={cid} target="_blank" rel="noopener noreferrer" className="text-blue-500 text-sm hover:underline">{cid}</a>
                     </div>
                     <div>
-                        { currAddress !== data.owner && currAddress !== data.seller ?
-                            <button className="enableEthereumButton bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm" onClick={() => buyNFT(tokenId)}>Compra este NFT</button>
-                            : <div className="text-emerald-500 text-2xl">Eres el propietario de este NFT</div>
-                        }
+                        { currAddress !== data.owner && isListed ? (
+                            <button className="enableEthereumButton bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm" onClick={() => buyNFT(tokenId)}>
+                                Compra este NFT
+                            </button>
+                        ) : (
+                            <div className="text-emerald-500 text-2xl">
+                                {currAddress === data.owner ? "Eres el propietario de este NFT" : "Este NFT no está a la venta"}
+                            </div>
+                        )}
                         <div className="text-green text-center mt-3">{message}</div>
                     </div>
                 </div>
