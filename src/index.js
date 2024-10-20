@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {
-  BrowserRouter,
+  HashRouter,  // Cambiado de BrowserRouter a HashRouter
   Routes,
   Route,
 } from "react-router-dom";
@@ -16,14 +16,14 @@ import NFTPage from './components/NFTpage';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <HashRouter>  {/* Cambiado de BrowserRouter a HashRouter */}
       <Routes>
         <Route path="/" element={<Marketplace />}/>
         <Route path="/sellNFT" element={<SellNFT />}/> 
         <Route path="/nftPage/:tokenId" element={<NFTPage />}/>        
         <Route path="/profile" element={<Profile />}/> 
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>
 );
 
