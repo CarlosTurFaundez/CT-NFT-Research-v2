@@ -31,7 +31,7 @@ jobs:
 
     - name: Deploy commit hash to smart contract
       run: |
-        npx hardhat run scripts/deploy-s-commits.js --network sepolia
+        npx hardhat run scripts/update-commits.js --network sepolia
       env:
         PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}  # Clave privada en secrets de GitHub
         COMMIT_HASH: ${{ env.COMMIT_HASH }}
