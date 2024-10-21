@@ -1,0 +1,39 @@
+name: Deploy Commit Hash to Smart Contract
+
+on:
+  push:
+    branches:
+      - gh-pages
+      - VERSIONNUEVA1  # Se observan las ramas gh-pages y VERSIONNUEVA1 para ejecutar la acción.
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'  # Cambiar si usas otra versión de Node.js
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Get commit information
+      id: commit_info
+      run: |
+        echo "COMMIT_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
+        echo "COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
+        echo "COMMIT_DATE=$(date '+%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
+
+    - name: Deploy commit hash to smart contract
+      run: |
+        npx hardhat run scripts/deploy-s-commit.js --network sepolia
+      env:
+        PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}  # Clave privada en secrets de GitHub
+        COMMIT_HASH: ${{ env.COMMIT_HASH }}
+        COMMIT_AUTHOR: ${{ env.COMMIT_AUTHOR }}
+        COMMIT_DATE: ${{ env.COMMIT_DATE }}
