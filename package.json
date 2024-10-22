@@ -2,8 +2,7 @@
   "name": "marketplace3",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://CarlosTurFaundez.github.io/CT-NFT-Research",  
-
+  "homepage": "https://CarlosTurFaundez.github.io/CT-NFT-Research",
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3",
     "@testing-library/jest-dom": "^5.16.4",
@@ -15,7 +14,7 @@
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-router": "^6.3.0",
-    "react-router-dom": "^6.3.0",
+    "react-router-dom": "^6.27.0",
     "react-scripts": "5.0.1",
     "react-spinners": "^0.14.1",
     "sweetalert2": "^11.14.3",

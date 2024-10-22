@@ -88,7 +88,7 @@ export default function Profile () {
                     })}
                 </div>
                 <div className="mt-10 text-xl">
-                    {data.length == 0 ? "Vaya, No tenemos ningún dato de tus NFT (¿Seguro que te has conectado?)":""}
+                    {data.length ==0 ? "Vaya, No tenemos ningún dato de tus NFT (¿Seguro que te has conectado?)":""}
                 </div>
             </div>
             </div>
