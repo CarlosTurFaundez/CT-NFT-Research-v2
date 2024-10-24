@@ -2,7 +2,7 @@
   "name": "marketplace3",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://CarlosTurFaundez.github.io/CT-NFT-Research",
+  "homepage": "https://CarlosTurFaundez.github.io/CT-NFT-Research-v2",
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3",
     "@testing-library/jest-dom": "^5.16.4",
