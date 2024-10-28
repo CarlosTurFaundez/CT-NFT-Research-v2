@@ -79,7 +79,7 @@ export default function Marketplace() {
         <div>
             <Navbar />
             <div className="flex flex-col place-items-center mt-20">
-                <div className="md:text-lg font-sans text-pink-200">ESTOS SON LOS NFT MÁS DESTACADOS</div>
+                <div className="md:text-lg font-sans text-pink-200">ESTOS SON LOS NFTS MÁS DESTACADOS</div>
                 <span className="mt-2 text-white">
                     Ver Smart Contract sobre el que han sido creados:
                     <a
