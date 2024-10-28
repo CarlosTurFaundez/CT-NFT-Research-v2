@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/CT-NFT-Research-v2/static/css/main.f4e85990.css",
-    "main.js": "/CT-NFT-Research-v2/static/js/main.9b34dfa2.js",
-    "static/js/453.c21bb676.chunk.js": "/CT-NFT-Research-v2/static/js/453.c21bb676.chunk.js",
-    "static/media/bg.png": "/CT-NFT-Research-v2/static/media/bg.e9fbae61ddb67e7e77a2.png",
-    "index.html": "/CT-NFT-Research-v2/index.html",
-    "main.f4e85990.css.map": "/CT-NFT-Research-v2/static/css/main.f4e85990.css.map",
-    "main.9b34dfa2.js.map": "/CT-NFT-Research-v2/static/js/main.9b34dfa2.js.map",
-    "453.c21bb676.chunk.js.map": "/CT-NFT-Research-v2/static/js/453.c21bb676.chunk.js.map"
+    "main.css": "./static/css/main.f4e85990.css",
+    "main.js": "./static/js/main.9b34dfa2.js",
+    "static/js/453.c21bb676.chunk.js": "./static/js/453.c21bb676.chunk.js",
+    "static/media/bg.png": "./static/media/bg.e9fbae61ddb67e7e77a2.png",
+    "index.html": "./index.html",
+    "main.f4e85990.css.map": "./static/css/main.f4e85990.css.map",
+    "main.9b34dfa2.js.map": "./static/js/main.9b34dfa2.js.map",
+    "453.c21bb676.chunk.js.map": "./static/js/453.c21bb676.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f4e85990.css",
-    "static/js/main.9b34dfa2.js"
+    "./static/css/main.f4e85990.css",
+    "./static/js/main.9b34dfa2.js"
   ]
 }
