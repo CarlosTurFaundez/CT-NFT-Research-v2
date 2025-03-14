@@ -7,3 +7,4 @@ Otra verificación
 Quinta verificación
 Sexta verificación UPF
 Nueva verificación 14/03/2025
+Verificación para mis queridos alumnos de LEGALTECH
